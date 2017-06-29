@@ -26,17 +26,26 @@ namespace MultiSelectDemo.Controls
 
 		public IEnumerable<T> UnselectedItems => Items.Where(i => !i.IsSelected).Select(i => i.Data);
 
-		public void Add(T item)
+		public void Add(T item, bool selected = false)
 		{
-			Add(new SelectableItem<T>(item));
+			Add(new SelectableItem<T>(item, selected));
 		}
 
-		public void Insert(int index, T item)
+		public void Insert(int index, T item, bool selected = false)
 		{
 			if (item == null)
 				throw new ArgumentNullException(nameof(item));
 
-			Insert(index, new SelectableItem<T>(item));
+			Insert(index, new SelectableItem<T>(item, selected));
+		}
+
+		public bool IsSelected(T item)
+		{
+			if (item == null)
+				throw new ArgumentNullException(nameof(item));
+
+			var idx = IndexOf(item);
+			return idx != -1 && Items[idx].IsSelected;
 		}
 
 		public bool Contains(T item)
